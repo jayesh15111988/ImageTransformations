@@ -1,0 +1,246 @@
+#include<iostream>
+#include<conio.h>
+#include<math.h>
+using namespace std;
+int main()
+{
+
+int m=3;
+int n=3;
+int kersize=3;
+int rowsize=5;
+int colsize=5;
+double temp40=0.0,temp50=0.0;
+double output1[5][5];
+double temp30[5][5];
+double temp31[5][5];
+double output2[5][5];
+int q=0;
+for(int e=0;e<rowsize;e++)
+{
+        for(int y=0;y<colsize;y++)
+{        
+        temp30[e][y]=0;
+        temp31[e][y]=0;
+        }
+        }
+for(int i=0;i<rowsize;i++)
+{
+        
+        for(int j=0;j<colsize;j++)
+        {
+                output1[i][j]=0;
+                output2[i][j]=0;
+                }
+                }
+
+int input[5][5]={{5,9,1,2,3},{1,2,3,6,9},{4,3,7,1,12},{3,5,2,12,56},{6,43,2,1,1}};
+for(int i=0;i<rowsize;i++)
+{
+        q=0;
+        for(int j=0;j<colsize;j++)
+        {
+         //cout<<i<<"read na";
+         //{ 
+             if(q<colsize)
+             {      
+                 if(q-1<0)
+                 {
+       
+                temp30[i][q++]=input[i][j];
+                
+           
+            }      
+                else
+                {
+                    temp30[i][q++]=input[i][j]+temp30[i][q-1];
+                    }
+                }
+        } 
+        }
+        //1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
+            for(int i=0;i<rowsize;i++)
+               {
+        for(int w=1;w<colsize;w++)
+        {
+                
+                if(w-3<0)
+                         {
+               
+                         output1[i][w-1]=temp30[i][w]/kersize;
+                  
+
+                         }
+                else
+                         {
+                         
+                         if(w==colsize-1)
+                         {
+                     
+                        output1[i][w-1]=(temp30[i][w]-temp30[i][w-3])/kersize;
+                         output1[i][w]=(temp30[i][w]-temp30[i][w-2])/kersize;
+                   
+                         }
+                         else if(w>2 && w<colsize-1)
+                         {
+                    
+                         output1[i][w-1]=(temp30[i][w]-temp30[i][w-3])/kersize;            
+
+                         }
+                         else
+                         {
+                             
+                             }
+                
+                         }
+                         }
+                }  
+        //#@$#@$#@$#@$#@$#@$@#$@$%$%$#%$#%$#%#$%#$%$#%#$  
+        for(int i=0;i<colsize;i++)
+{
+        q=0;
+        for(int j=0;j<rowsize;j++)
+        {
+         //cout<<i<<"read na";
+         //{ 
+             if(q<rowsize)
+             {      
+                 if(q-1<0)
+                 {
+       
+                temp31[q++][i]=output1[j][i];
+                //cout<<"in first"<<temp31[q][i]<<endl;
+           
+            }      
+                else
+                {
+                    temp31[q++][i]=output1[j][i]+temp31[q-1][i];
+                  //  cout<<"in second"<<temp31[q][i]<<endl;
+                    }
+                }
+        } 
+        }
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+        
+               for(int i=0;i<colsize;i++)
+               {
+        for(int w=1;w<rowsize;w++)
+        {
+                
+                if(w-3<0)
+                         {
+               
+                         output2[w-1][i]=temp31[w][i]/kersize;
+                  
+
+                         }
+                else
+                         {
+                         
+                         if(w==rowsize-1)
+                         {
+                     
+                        output2[w-1][i]=(temp31[w][i]-temp31[w-3][i])/kersize;
+                         output2[w][i]=(temp31[w][i]-temp31[w-2][i])/kersize;
+                   
+                         }
+                         else if(w>2 && w<rowsize-1)
+                         {
+                    
+                         output2[w-1][i]=(temp31[w][i]-temp31[w-3][i])/kersize;            
+
+                         }
+                         else
+                         {
+                             
+                             }
+                
+                         }
+                         }
+                }  
+          
+          for(int i=0; i<rowsize;i++)
+          {
+                  for(int j=0;j<colsize;j++)
+                  {
+                          cout<<output2[i][j]<<" ";
+                          }
+                          cout<<endl;
+                          }
+         
+        
+        //%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            /* for(int i=0;i<rowsize;i++)
+{
+        
+        for(int j=0;j<colsize;j++)
+        {
+                cout<<temp31[i][j]<<" ";
+                }
+                cout<<endl;
+                }*/
+        
+          
+          
+         
+             
+              /*for(int i=0;i<rowsize;i++)
+               {
+        for(int w=1;w<colsize;w++)
+        {
+                
+                if(w-3<0)
+                         {
+               
+                         output[i][w-1]=temp30[i][w]/kersize;
+                  
+
+                         }
+                else
+                         {
+                         
+                         if(w==colsize-1)
+                         {
+                     
+                        output[i][w-1]=(temp30[i][w]-temp30[i][w-3])/kersize;
+                         output[i][w]=(temp30[i][w]-temp30[i][w-2])/kersize;
+                   
+                         }
+                         else if(w>2 && w<colsize-1)
+                         {
+                    
+                         output[i][w-1]=(temp30[i][w]-temp30[i][w-3])/kersize;            
+
+                         }
+                         else
+                         {
+                             
+                             }
+                
+                         }
+                         }
+                }*/  
+        
+        /*for(int i=0;i<rowsize;i++)
+        {
+                for(int j=0;j<colsize;j++)
+                {
+               cout<<output[i][j]<<" ";
+               }
+               cout<<endl;
+                }*/
+  
+         //int temp50,temp40;
+
+ 
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+
+                
+// Implement a m*n 2D mean filter with 1-d filters
+getch();
+}
