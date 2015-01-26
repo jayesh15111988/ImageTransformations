@@ -1,11 +1,13 @@
 #include <SImage.h>
 #include <SImageIO.h>
 #include <cmath>
+#include <ctime>
 #include <math.h>
 #include <unistd.h>
 #include <getopt.h>
 #define PI 3.14
 #define E 2.718281828
+
 //This is the name of default file. If no input is given, this file name will be considered
 string input_filename = "4.png";
 
@@ -362,8 +364,6 @@ SDoublePlane hough_circles(SDoublePlane &input,int radiushough,double wtthresh)
     for(int i=0; i<input.rows()*input.cols()*range1; i++) {
         if(row[i]==0) {
             val=i;
-            cout<<val;
-            cout<<"broke";
             break;
         }
         for(double theta=0; theta<=2*PI; theta+=0.00174) {
@@ -402,6 +402,10 @@ int main(int argc, char *argv[])
         displayOptions();
         return 1;
     }
+    if(argc < 3) {
+        displayOptions();
+    }
+
     if(argc >=2)
         input_filename = argv[1];
     if(argc >= 3)
@@ -416,27 +420,43 @@ int main(int argc, char *argv[])
         hough_radius = atoi(argv[6]);
     if(argc >= 8)
         hough_vote = atoi(argv[7]);
+
+    printf("Converting... Please be patient...\n\n");
+    int start_s=clock();
+    printf("Reading input file \n\n");
     SDoublePlane input_image= SImageIO::read_png_file(input_filename.c_str());
     //out of the gray scale image
+    printf("Converting to gray scale image\n\n");
     SImageIO::write_png_file("gray_scale_image.png", input_image, input_image, input_image);
     // subsample the input image
+    printf("Subsampling gray scale image\n\n");
     SDoublePlane subsampled = subsample(input_image,factor_value);
     SImageIO::write_png_file("subsampled_image.png", subsampled, subsampled, subsampled);
     //Call to Gaussian filter to smooth the image
     SDoublePlane gaussed = gaussian_filter(subsampled,sigma_value);
+    printf("Applying Gaussian filter to image\n\n");
     SImageIO::write_png_file("gaussed_image.png", gaussed , gaussed , gaussed);
     //mean filter
+    printf("Calculating mean value....\n\n");
     SDoublePlane mean_filtered = mean_filter(input_image, m_value, n_value);
     SImageIO::write_png_file("mean_image.png", mean_filtered, mean_filtered, mean_filtered);
     // compute gradient magnitude map of the input image
     SDoublePlane gradient_x = sobel_gradient_filter(gaussed, true);
+    printf("Applying Sobel filter in x direction\n\n");
     SImageIO::write_png_file("gradient_x_image.png", gradient_x, gradient_x, gradient_x);
     SDoublePlane gradient_y = sobel_gradient_filter(gaussed, false);
+    printf("Applying Sobel filter in y direction\n\n");
     SImageIO::write_png_file("gradient_y_image.png", gradient_y, gradient_y, gradient_y);
     // find edges in the input image
     SDoublePlane edges = find_edges(gradient_x, gradient_y, thresh_value);
+    printf("Applying edge detection algorithm\n\n");
     SImageIO::write_png_file("edges_image.png", edges, edges, edges);
     // detect circles in the input image, and visualize the result
     SDoublePlane overlay_plane = hough_circles(edges, hough_radius, hough_vote);
+    printf("Applying circle detection algorithm\n\n");
     SImageIO::write_png_file("detected_image.png",overlay_plane,overlay_plane,overlay_plane);
+
+    printf("Image Transformation Successfully Completed\n\n");
+    int stop_s=clock();
+    printf("Total time taken for image operations is %f \n\n",(stop_s-start_s)/double(CLOCKS_PER_SEC));
 }
