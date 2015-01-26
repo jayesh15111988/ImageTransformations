@@ -5,6 +5,7 @@
 #include <math.h>
 #include <unistd.h>
 #include <getopt.h>
+
 #define PI 3.14
 #define E 2.718281828
 
